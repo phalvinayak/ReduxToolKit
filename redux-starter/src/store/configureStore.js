@@ -4,6 +4,7 @@ import taskReducer from "./tasks";
 import employeeReducer from "./employees";
 import log from "./middleware/log";
 import error from "./middleware/error";
+import api from "./middleware/api";
 
 const store = configureStore({
   reducer: {
@@ -15,6 +16,7 @@ const store = configureStore({
     log,
     logger,
     error,
+    api,
   ],
 });
 
