@@ -88,7 +88,7 @@ export const addNewTask = (data) =>
     url: "/tasks",
     method: "POST",
     data,
-    onStart: apiRequested.type,
+    // onStart: apiRequested.type,
     onSuccess: addTask.type,
     onError: apiRequestFailed.type,
   });
@@ -98,7 +98,7 @@ export const completeTaskRequest = (task) =>
     url: `/tasks/${task.id}`,
     method: "PATCH",
     data: task,
-    onStart: apiRequested.type,
+    // onStart: apiRequested.type,
     onSuccess: completeTask.type,
     onError: apiRequestFailed.type,
   });
@@ -107,7 +107,7 @@ export const deleteTaskRequest = (id) =>
   apiCallBegin({
     url: `/tasks/${id}`,
     method: "DELETE",
-    onStart: apiRequested.type,
+    // onStart: apiRequested.type,
     onSuccess: removeTask.type,
     onError: apiRequestFailed.type,
   });

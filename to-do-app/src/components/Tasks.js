@@ -1,33 +1,47 @@
-import React, { useContext, useEffect, useState } from "react";
-import StoreContext from "../contexts/StoreContext";
-import { loadTasks } from "../store/tasks";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  completeTaskRequest,
+  deleteTaskRequest,
+  loadTasks,
+} from "../store/tasks";
+import AddTask from "./AddTask";
 
 const Tasks = () => {
-  const store = useContext(StoreContext);
-  const [tasks, setTasks] = useState([]);
+  const { tasks, loading } = useSelector((state) => state.tasks);
+  const dispatch = useDispatch();
+
+  const completeTask = (id) => {
+    dispatch(completeTaskRequest({ id, completed: true }));
+  };
+
+  const deleteTask = (id) => {
+    dispatch(deleteTaskRequest(id));
+  };
 
   useEffect(() => {
-    store.dispatch(loadTasks());
-
-    const unsubscribe = store.subscribe(() => {
-      const storeTasks = store.getState().tasks.tasks;
-      if (storeTasks !== tasks) {
-        setTasks(storeTasks);
-      }
-    });
-
-    return () => {
-      unsubscribe();
-    };
+    dispatch(loadTasks());
   }, []);
 
-  console.log(tasks);
-
   return (
-    <div>
-      {tasks.map((task) => (
-        <p key={task.id}>{task.task}</p>
-      ))}
+    <div className="todos">
+      <AddTask />
+      {loading ? (
+        <p>Loading...</p>
+      ) : (
+        tasks.map((task) => (
+          <p
+            key={task.id}
+            className={`todo__item ${task.completed ? "completed" : ""}`}
+          >
+            {task.task}
+            <span>
+              <button onClick={() => completeTask(task.id)}>✅</button>{" "}
+              <button onClick={() => deleteTask(task.id)}>❌</button>
+            </span>
+          </p>
+        ))
+      )}
     </div>
   );
 };
